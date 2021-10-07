@@ -11,7 +11,7 @@ extern "C" void MD5Update(struct MD5Context* ctx, unsigned char* buf, unsigned l
 extern "C" void MD5Final(unsigned char digest[16], struct MD5Context* ctx);
 extern "C" void MD5Transform(uint32 buf[4], uint32 in[16]);
 
-std::string generic_function::compute_ioi_hash(std::string& input_to_ioi_hash, bool outputRealMD5 = false)
+std::string generic_function::compute_ioi_hash(std::string& input_to_ioi_hash, bool outputRealMD5)
 {
     unsigned char signature[16];
     struct MD5Context md5c;
