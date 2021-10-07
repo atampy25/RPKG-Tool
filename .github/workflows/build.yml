@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - rdils-testing-ground
     tags:
       - v*
   pull_request:
