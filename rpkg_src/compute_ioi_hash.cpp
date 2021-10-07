@@ -11,7 +11,7 @@ extern "C" void MD5Update(struct MD5Context* ctx, unsigned char* buf, unsigned l
 extern "C" void MD5Final(unsigned char digest[16], struct MD5Context* ctx);
 extern "C" void MD5Transform(uint32 buf[4], uint32 in[16]);
 
-void generic_function::compute_ioi_hash(std::string& input_to_ioi_hash)
+std::string generic_function::compute_ioi_hash(std::string& input_to_ioi_hash, bool outputRealMD5 = false)
 {
     unsigned char signature[16];
     struct MD5Context md5c;
@@ -31,14 +31,17 @@ void generic_function::compute_ioi_hash(std::string& input_to_ioi_hash)
 
     std::stringstream ss;
 
-    for (uint64_t m = 0; m < 16; m++)
+    if (outputRealMD5)
     {
-        ss << std::hex << std::setw(2) << std::setfill('0') << std::uppercase << (int)(unsigned char)signature[m];
+        for (uint64_t m = 0; m < 16; m++)
+        {
+            ss << std::hex << std::setw(2) << std::setfill('0') << std::uppercase << (int)(unsigned char)signature[m];
+        }
+
+        LOG("Normal MD5 Hash: " << ss.str());
+
+        ss.str(std::string());
     }
-
-    LOG("Normal MD5 Hash: " << ss.str());
-
-    ss.str(std::string());
 
     ss << "00";
 
@@ -47,5 +50,5 @@ void generic_function::compute_ioi_hash(std::string& input_to_ioi_hash)
         ss << std::hex << std::setw(2) << std::setfill('0') << std::uppercase << (int)(unsigned char)signature[m];
     }
 
-    LOG("IOI Hash: " << ss.str());
+    return ss.str();
 }
